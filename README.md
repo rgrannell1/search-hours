@@ -14,4 +14,4 @@ node src/cli.js show-spec --path BrowserHistory.json
 
 ## Is that your data?
 
-No, I wouldn't upload such sensitive data publically.
+No, I wouldn't upload such sensitive data publically. Lots of people seem comfortable uploading example browser data to GitHub though! For politeness's sake I won't share a link. 
