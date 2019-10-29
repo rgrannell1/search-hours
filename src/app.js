@@ -6,8 +6,7 @@ const fs = require('fs')
 
 const constants = {
   paths: {
-    history: './data/history.json',
-    graph: './data/graph.png'
+    history: './data/history.json'
   }
 }
 
@@ -15,8 +14,6 @@ const readEntries = path => {
   const history = require(path)
   return history['Browser History']
 }
-
-const entries = readEntries(constants.paths.history)
 
 const sortGoogleHistory = (entry0, entry1) => {
   return entry0.time_usec - entry1.time_usec
@@ -108,14 +105,16 @@ const getSortedDates = () => {
   return sortedDates
 }
 
-const saveGraph = async () => {
-  const spec = {
+const createSpec = historyPath => {
+  const entries = readEntries(historyPath)
+
+  return {
     $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.9.json',
     data: {
       values: processSearchHistory(entries)
     },
     title: {
-      text: 'Google Searches By Hour, Over the Years'
+      text: 'Browser History By Hour, Over the Years'
     },
     mark: 'rect',
     config: {},
@@ -141,15 +140,35 @@ const saveGraph = async () => {
       }
     }
   }
-
- const view = new vega.View(vega.parse(spec))
-    .renderer('none')
-    .initialize()
-
- const canvas = await view.toCanvas()
- const stream = canvas.createPNGStream()
- const out = fs.createWriteStream(constants.paths.graph)
- stream.pipe(out)
 }
 
-saveGraph()
+const saveGraph = async fpaths => {
+  const spec = createSpec(fpaths.history)
+  const view = new vega.View(vega.parse(spec))
+  .renderer('none')
+    .initialize()
+
+  const canvas = await view.toCanvas()
+  const stream = canvas.createPNGStream()
+  const out = fs.createWriteStream(paths.graph)
+  stream.pipe(out)
+}
+
+const showSpec = async fpaths => {
+  console.log(JSON.stringify(createSpec(fpaths.history), null, 2))
+}
+
+module.exports = args => {
+  const fpaths = {
+    graph: path.resolve(__dirname, '../data/graph.json'),
+    history: path.resolve(__dirname, '..', args['--path'])
+  }
+
+  if (args.render) {
+    saveGraph(fpaths)
+  } else if (args['show-spec']) {
+    showSpec(fpaths)
+  } else {
+    throw new Error('unsupported arguments')
+  }
+}
