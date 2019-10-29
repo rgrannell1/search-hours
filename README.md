@@ -1,7 +1,7 @@
 
 # Search Hours
 
-Graph the number of Google searches you make per-hour, over the years. This shows both how often you use your devices, and your sleep cycle.
+Graph your browser-activity per-hour, over the years. This shows both how often you use your devices, and your sleep cycle.
 
 ![Example Image](example.png "Example Image")
 
