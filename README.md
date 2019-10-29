@@ -1,8 +1,8 @@
 
 # Search Hours
 
-
+![Example Image](example.png "Example Image")
 
 # Is that your data?
 
-No. 
+No, I wouldn't upload such sensitive data publically. 
