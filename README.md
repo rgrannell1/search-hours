@@ -7,6 +7,11 @@ Graph the number of Google searches you make per-hour, over the years. This show
 
 ## Usage
 
+```
+node src/cli.js render --path BrowserHistory.json
+node src/cli.js show-spec --path BrowserHistory.json
+```
+
 ## Is that your data?
 
 No, I wouldn't upload such sensitive data publically.
