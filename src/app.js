@@ -6,7 +6,8 @@ const fs = require('fs')
 
 const constants = {
   paths: {
-    history: './data/history.json'
+    history: './data/history.json',
+    graph: './search.png'
   }
 }
 
@@ -96,7 +97,7 @@ const getSortedDates = () => {
   // -- some of the worst code I've ever written, but Vega's date formats are just too fiddly.
   const sortedDates = []
 
-  for (let year = 2005; year < 2020; ++year) {
+  for (let year = 2005; year <= 2020; ++year) {
     for (let week = 0; week < 54; ++week) {
       sortedDates.push(`${week} ${year}`)
     }
@@ -118,7 +119,7 @@ const createSpec = historyPath => {
     },
     mark: 'rect',
     config: {},
-    width: 800,
+    width: 1600,
     height: 400,
     encoding: {
       y: {
@@ -133,8 +134,10 @@ const createSpec = historyPath => {
       },
       color: {
         scale: {
-          scheme: 'blues'
+          scheme: 'blues',
+          domain: [0, 400]
         },
+        sort: 'descending',
         field: 'count',
         type: 'quantitative'
       }
@@ -150,7 +153,7 @@ const saveGraph = async fpaths => {
 
   const canvas = await view.toCanvas()
   const stream = canvas.createPNGStream()
-  const out = fs.createWriteStream(paths.graph)
+  const out = fs.createWriteStream(constants.paths.graph)
   stream.pipe(out)
 }
 
